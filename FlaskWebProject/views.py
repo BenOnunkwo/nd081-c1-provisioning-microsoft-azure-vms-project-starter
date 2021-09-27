@@ -130,10 +130,12 @@ def _build_msal_app(cache=None, authority=None):
     return msal.ConfidentialClientApplication(
         app.config["CLIENT_ID"], token_cache=cache,
         client_credential=app.config["CLIENT_SECRET"],
-        authority=authority or app.config["ÄUTHORITY"]
+        authority=authority or app.config["AUTHORITY"]
     )
     
 
 def _build_auth_url(authority=None, scopes=None, state=None):
-    # TODO: Return the full Auth Request URL with appropriate Redirect URI
-    return "https://flaskcms.azurewebsites.net/.auth/login/aad/callback"
+    return _build_msal_app(authority=authority).get_authorization_request_url(
+        scopes or [],
+        state=state or str(uuid.uuid4()),
+        redirect_uri=url_for("authorized", _external=True))
