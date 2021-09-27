@@ -1,0 +1,6 @@
+/__pycache__
+/cms-env
+*.zip
+*.pyc
+/TestAuth
+/Test Images
